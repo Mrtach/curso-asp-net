@@ -1,0 +1,100 @@
+﻿@model IEnumerable<WebApplicationSistemaDeReclamos.Models.ViewModels.ReclamoViewModel>
+
+@{
+    ViewData["Title"] = "Listado de reclamos";
+}
+
+        <div class="text-center">
+            <h1>Listado de reclamos</h1>
+        </div>
+        <hr />
+    <!--<p>
+        <a asp-action="Create" class="button">Crear Nuevo</a>
+    </p>-->
+
+    <form action="/Reclamos/Buscar" method="post" class="row col-12 d-flex justify-content-center">
+        <div class="col-4">
+            <input type="text" value="@ViewBag.textoBucar" name="textoBucar" class="form-control" placeholder="Buscador reclamos">
+        </div>
+
+        <div class="col-1">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    <table class="col-12 table table-striped mt-2">
+        <thead class="bg-info">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaAlta)
+                </th>
+                <th class="w-25"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) //recupera los datos y los llena en la tabla
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Titulo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaAlta)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.Id },
+                        new{ @class="btn btn-success"}) |
+                        @Html.ActionLink("Detalles", "Details", new { id = item.Id },
+                        new{ @class="btn btn-warning"}) |
+                        @Html.ActionLink("Borrar", "Delete", new { id = item.Id },
+                new { @class="btn btn-danger", onclick="borrarReclamo(this); return false;" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+<script>
+    //OJO ESTO ES 100% JAVASCRIPT!!!!!!!! OJO!!!!!
+    function borrarReclamo(linkActual) {
+        bootbox.confirm({
+            message: 'Confirma borrar el reclamo [NombreDeReclamo]',
+            buttons: {
+                cancel: {
+                    label: 'Cancelar',
+                    className: 'btn-success'
+                },
+                confirm: {
+                    label: 'Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result==true){
+                    window.location = linkActual.href;
+                    console.log("Reclamo Borrado");
+                }
+            }
+        });
+    }
+</script>
